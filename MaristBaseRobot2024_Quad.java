@@ -148,8 +148,8 @@ public class MaristBaseRobot2024_Quad {
     public NormalizedColorSensor colorSensor = null;
 
 // ~ The following section are our constants and limiters. Any variable that
-// ~ is uppercase is a constant, and will never change unless altered in the 
-// ~ final variable. 
+// ~ is uppercase is a constant, and will never change unless altered in its 
+// ~ own final variable. 
 // ~ The first three final variables are for controlling the power of any
 // ~ motors in an arm. It is not recommended to change these for the safety of
 // ~ the motors (from overheating) and students (from physical injury).
@@ -214,7 +214,7 @@ public class MaristBaseRobot2024_Quad {
 
     public void init(HardwareMap ahwMap) {
         
-	// Save reference to Hardware map
+	// Save reference to Hardware map.
         hwMap = ahwMap;
 
 // ~ This is where the initialization begins. we change the attributes value
@@ -223,7 +223,7 @@ public class MaristBaseRobot2024_Quad {
 // ~ " [Java Name] = hwMap.[Electronic].get("[Configuration Name]"); "
 // ~ This essentially says,
 // ~ "Look, this variable? Go in the hwMap, go look at this specific group
-// ~  of electronics, find (get) this string, and assign it to said variable."
+// ~  of electronics, find (get) this string, and assign it to our variable."
 // ~ This will also be done to other electronics and will be noted.
 
         // Define and Initialize Motors.  Assign names that match the setup on the Driver Station.
@@ -309,6 +309,10 @@ public class MaristBaseRobot2024_Quad {
 
     }
 
+// ~ waitForTick is not important for our purposes, but for documentation
+// ~ reasons, will be left in. There is already an analysis written by the
+// ~ original creators, so there is no explaination needed from me.
+	
     /***
      *
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
@@ -335,13 +339,29 @@ public class MaristBaseRobot2024_Quad {
         period.reset();
     }
 
+// ~ Here is where we begin to see the beginning of the methods that are
+// ~ used for the robot's autonomous. There are five original methods that
+// ~ can be used for an autonomous program,
+// ~  1). driveStraightInches() , move x amount of inches foward/backward.
+// ~  2). pointTurnDegrees() , turn x amount of degrees left/right.
+// ~  3). strafeInches() , strafe x amount of inches left/right.
+// ~  4). leftArmMotorDeg() , rise/lower the arm by x degrees.
+// ~  5). (Optional) rightArmMotorDeg() , similar to leftArmMotorDeg() but
+// ~      this method is for your second arm (if added).
+// ~ We will go over all five methods and explain how they were built and
+// ~ how they are used.
+	
+    // Additional Functions (i.e. Methods) to control Servos and motors
 
-    // Additional Functions to control Servos and motors
+    public void driveStraightInches(double speed, double inches, double timeoutS) {
+	
+// ~ The above signature asks for three variables from the programmer.
+// ~  1). "double speed" is to decide how fast the robot should drive.
+// ~  2). "double inches" is to decide how fast the robot should drive.
+// ~  3). "double timeoutS" is to decide how fast the robot should drive.
 
-    public void driveStraightInches(double speed,
-                             double inches,
-                             double timeoutS) {
-// Creates new variables for the Scope of this method.
+	    
+	// Creates new variables for the Scope of this method.
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftRearTarget;
@@ -403,7 +423,7 @@ public class MaristBaseRobot2024_Quad {
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
 
-//Dangerous while loop.
+		// Dangerous while loop.
             while ((period.seconds() < timeoutS) &&
                     (leftFront.isBusy() && rightFront.isBusy() && leftRear.isBusy() && rightRear.isBusy() )) {
                    // Wait for Sequence to complete
