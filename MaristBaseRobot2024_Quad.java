@@ -357,9 +357,12 @@ public class MaristBaseRobot2024_Quad {
 	
 // ~ The above signature asks for three variables from the programmer.
 // ~  1). "double speed" is to decide how fast the robot should drive.
-// ~  2). "double inches" is to decide how fast the robot should drive.
-// ~  3). "double timeoutS" is to decide how fast the robot should drive.
-
+// ~  2). "double inches" is to tell the robot how far it should drive.
+// ~  3). "double timeoutS" is to stop the program after a certain amount
+// ~      of time.
+// ~ The next four int variables that are created will be used to calculate
+// ~ the distance (and by extension the amount of rotation of the motors) that
+// ~ the robot will travel when it the method finishes executing. 
 	    
 	// Creates new variables for the Scope of this method.
         int newLeftFrontTarget;
