@@ -47,7 +47,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 // ~ The below are credits to the original programmers and revisions done to
 // ~ this program.
 
-/**
+/*
  * Created by michaudc on 10/8/2017.
  * Updated by michaudc on 29 July 2021
  * Additional code by Allesio Toniolo July 2021
@@ -75,7 +75,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 // ~ We also note what type of electronic is associated with each Java and 
 // ~ Configuration Name. This is a type of Configuration Mapping.
 
-/** 
+/*
  * This class models the physical structure of the robot with instances
  * of motors, servos, and sensors.
  *
