@@ -70,7 +70,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 // ~ The JAVA NAME of an electronic is used to reference the electronic within the
 // ~ program. We commonly write a Java Name in the camelCase format.
 // ~ The CONFIGURATION NAME of an electronic is used to name the electronic in the
-// ~ Driver Station in Configuration. It is recommended that the Configuration Name
+// ~ Driver Station Configuration. It is recommended that the Configuration Name
 // ~ is similar or the same as the Java Name for clarity. 
 // ~ We also note what type of electronic is associated with each Java and 
 // ~ Configuration Name. This is a type of Configuration Mapping.
@@ -213,7 +213,12 @@ public class MaristBaseRobot2024_Quad {
     /* Initialize standard Hardware interfaces */
 
     public void init(HardwareMap ahwMap) {
-        
+
+// ~ Note: Mr. Michaud acknowledges that the reference is redundant as it can
+// ~ can be removed and the parameter rewritten as "HardwareMap hwMap" and it
+// ~ will still work. This reference is saved for learning purposes but it is
+// ~ recommended that this is removed and the parameter rewritten for clarity.
+
 	// Save reference to Hardware map.
         hwMap = ahwMap;
 
@@ -313,13 +318,12 @@ public class MaristBaseRobot2024_Quad {
 // ~ reasons, will be left in. There is already an analysis written by the
 // ~ original creators, so there is no explaination needed from me.
 	
-    /***
-     *
+    /*
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
      * periodic tick.  This is used to compensate for varying processing times for each cycle.
      * The function looks at the elapsed cycle time, and sleeps for the remaining time interval.
      *
-     * @param periodMs  Length of wait cycle in mSec.
+     * @param periodMs		Length of wait cycle in mSec.
      */
 
     public void waitForTick(long periodMs) {
@@ -373,6 +377,12 @@ public class MaristBaseRobot2024_Quad {
         // Reverse inches. Goofy and Hacky. Essential to configure.
         inches = inches * -1 * (12.0/39.0);
 
+// ~ This section resets the encoders for all the motors and re-initializes
+// ~ them. We do this so the robot receives the original information for the
+// ~ motors in case we did any previous altercations to the encoder variables.
+// ~ It also helps keep all the motors synchronized so that the robot uses
+// ~ our code correctly.
+	    
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -383,6 +393,9 @@ public class MaristBaseRobot2024_Quad {
         leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+// ~ This is a safely measure in case the speed variable is set to an unsafe
+// ~ level. In case the speed variable is above the limit, this statement
+// ~ sets the speed variable to the speed limit.
 
         // Set to Limit of DRIVE_SPEED
         if (Math.abs(speed) > DRIVE_SPEED) {
