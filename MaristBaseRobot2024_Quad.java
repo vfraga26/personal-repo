@@ -190,8 +190,15 @@ public class MaristBaseRobot2024_Quad {
 // ~ software to hardware. We create a HardwareMap object called "hwMap"
 // ~ to retreive the Configuration Names from the Driver Station
 // ~ and relate it to the Java Names. This will be done in a later section.
-// ~ The variable "ElapsedTime" is not relevant to our purposes, so please 
-// ~ disregard.
+// ~ The object "ElapsedTime period" is relevant when you see code such as  
+// ~ "period.reset()" or "period.seconds()". Let me break it down:
+// ~ ElapsedTime is a class that acts like a timer. An object created from 
+// ~ this class will count up according to the amount of seconds that passed
+// ~ when performing a method within the init method (said method explained 
+// ~ further on). We want this timer because during autonomous, we want to
+// ~ make sure we stay within the time limit. By using ElapsedTime, the
+// ~ seconds can be tracked. We will see how this is used in the program 
+// ~ later on.
 	
 // ~ Also take note of the "Local OpMode" being mentioned. Operational Mode
 // ~ (or just OpMode) is a class that adds a program to the Driver Station
@@ -255,8 +262,6 @@ public class MaristBaseRobot2024_Quad {
         leftArm      = hwMap.dcMotor.get("leftarm");
         rightArm     = hwMap.dcMotor.get("rightarm");
 
-// Usually, FORWARD is clockwise and REVERSE is counter-clockwise. It is important to distiguish this.
-
 // ~ This section is assigning a Forward or Reverse direction to each of the
 // ~ motors. To understand the need for this differientation, we must look at 
 // ~ a physical motor. Point the motor's shaft towards you. 
@@ -265,6 +270,15 @@ public class MaristBaseRobot2024_Quad {
 // ~ moving in the REVERSE direction. 
 // ~ You would have also learned this in your manual along with Fleming's
 // ~ Left-Hand Rule for Motors.
+// ~ I will break down some terms here.
+// ~ ".setDirection()" - this method essentially sets the direction of a 
+// ~ motor to one of two directions:
+// ~  1). FORWARD - The shaft moves in a clockwise motion.
+// ~  2). REVERSE - The shaft moves in a counter-clockwise motion.
+// ~ "DcMotor.Direction.____" - This essentially says "Hey. For a motor? Set 
+// ~ it's direction to the following, ____".
+
+// Usually, FORWARD is clockwise and REVERSE is counter-clockwise. It is important to distiguish this.
 
         leftFront.setDirection(DcMotor.Direction.FORWARD);  // Set to REVERSE if using AndyMark motors
         rightFront.setDirection(DcMotor.Direction.REVERSE); // Set to FORWARD if using AndyMark motors
@@ -288,13 +302,26 @@ public class MaristBaseRobot2024_Quad {
 // ~ four modes that the Encoders can be set to.
 // ~ The Run Mode of a motor determines how a motor interprets the parameter
 // ~ within the parentheses. There are four modes that can be set:
-// ~  1). RUN_WITHOUT_ENCODER -
-// ~  2). RUN_USING_ENCODER - 
-// ~  3). RUN_TO_POSITION -
-// ~  4). STOP_AND_RESET_ENCODER -
+// ~  1). RUN_WITHOUT_ENCODER - The motor no longer uses the encoder to
+// ~ 	  maintain a constant speed. The encoder parameters can still be 
+// ~ 	  used, but the motor speed will rely on external factors, such as
+// ~ 	  battery life and friction. This is further explained in your manual.
+// ~  2). RUN_USING_ENCODER - The motor activates use of the encoder. The
+// ~ 	  motor uses the parameters from the encoder to operate. This mode
+// ~ 	  targets a specific velocity (speed) and accounts for friction, battery
+// ~ 	  voltage, and other factors.
+// ~  3). RUN_TO_POSITION - The motor will target a specific position and travel
+// ~ 	  to it. The motor will continue to hold it's position even after it 
+// ~ 	  has reached it's target. If the motor is unable to reach the position
+// ~ 	  it will continue to run forever, leading to stalling and overheating.
+// ~  4). STOP_AND_RESET_ENCODER - Stops all movement for a motor and resets
+// ~      it's encoder back to zero (i.e. becomes a blank slate). You will 
+// ~ 	  want to do this if you want to know the position a motor during 
+// ~ 	  initialization or reset a misbehaving motor during a game.  
 // ~ "DcMotor.RunMode.____" - This essentially says "Hey. For a motor? Set 
-// ~ it's mode to the following, ____, and assign this mode to this motor".
-// ~ "RUN_WITHOUT_ENCODER" - Type of mode that !WORKING ON THIS!
+// ~ it's mode to the following, ____".
+// ~ "RUN_WITHOUT_ENCODER" - Type of mode that the encoder can have. 
+// ~ Explained in the list above.
 
         // Set all motors to run without encoders. This is by default.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -479,6 +506,12 @@ public class MaristBaseRobot2024_Quad {
             leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+// ~ This is when we begin seeing how the ElapsedTime is used within this 
+// ~ method. Now that we set up the path that the robot will take, we now
+// ~ reset the time (period) to measure how long the robot takes to travel
+// ~ the path. Next, we start motion in the motors and the robot begins to
+// ~ move.
+		
             // reset the timeout time and start motion. Turns the motors on.
             period.reset();
             leftFront.setPower(Math.abs(speed));
