@@ -107,9 +107,9 @@ public class MaristBaseRobot2024_Quad {
 // ~ These are the attributes of our class. This section of our attributes 
 // ~ are for our Motors and Servos. Note that these are public attributes 
 // ~ and not private. This is because we want to use these attributes across 
-// ~ all related programs. We also make these attributes equal to "null"
-// ~ so they are reserved and kept within scope. 
-// ~ We structure an attribute with the following,
+// ~ all related programs connected to the Base Robot program. We also make
+// ~ these attributes equal to "null" so they are reserved and kept within 
+// ~ scope. We structure an attribute with the following format,
 // ~  " public [Electronic] [Java Name] = null; "
 
       /* Public Motors and Servos */
@@ -149,7 +149,7 @@ public class MaristBaseRobot2024_Quad {
 
 // ~ The following section are our constants and limiters. Any variable that
 // ~ is uppercase is a constant, and will never change unless altered in its 
-// ~ own final variable. 
+// ~ own final variable (i.e. the below variables). 
 // ~ The first three final variables are for controlling the power of any
 // ~ motors in an arm. It is not recommended to change these for the safety of
 // ~ the motors (from overheating) and students (from physical injury).
@@ -159,6 +159,7 @@ public class MaristBaseRobot2024_Quad {
     public static final double ARM_UP_POWER     =  2.00;
     public static final double ARM_DOWN_POWER   = -2.00;
 
+// ~ *UPDATE THIS*
 // ~ These following attributes, to note, are not public attributes. Since we
 // ~ do not need to alter or use these attributes outside of the Base Code, they
 // ~ are private and kept within this program. These attributes are for the
@@ -282,7 +283,18 @@ public class MaristBaseRobot2024_Quad {
         rightRear.setPower(0);
 
 // ~ We set the robot to run without encoders because we assume that TeleOp
-// ~ is being run. 
+// ~ is being run. I will break down some terms here.
+// ~ ".setMode()" - this method essentially sets the run mode to one of the
+// ~ four modes that the Encoders can be set to.
+// ~ The Run Mode of a motor determines how a motor interprets the parameter
+// ~ within the parentheses. There are four modes that can be set:
+// ~  1). RUN_WITHOUT_ENCODER -
+// ~  2). RUN_USING_ENCODER - 
+// ~  3). RUN_TO_POSITION -
+// ~  4). STOP_AND_RESET_ENCODER -
+// ~ "DcMotor.RunMode.____" - This essentially says "Hey. For a motor? Set 
+// ~ it's mode to the following, ____, and assign this mode to this motor".
+// ~ "RUN_WITHOUT_ENCODER" - Type of mode that !WORKING ON THIS!
 
         // Set all motors to run without encoders. This is by default.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -335,10 +347,9 @@ public class MaristBaseRobot2024_Quad {
 	
     /*
      * waitForTick implements a periodic delay. However, this acts like a metronome with a regular
-     * periodic tick.  This is used to compensate for varying processing times for each cycle.
+     * periodic tick. This is used to compensate for varying processing times for each cycle.
      * The function looks at the elapsed cycle time, and sleeps for the remaining time interval.
-     *
-     * @param periodMs		Length of wait cycle in mSec.
+     * @param periodMs - Length of wait cycle in mSec.
      */
 
     public void waitForTick(long periodMs) {
@@ -380,14 +391,16 @@ public class MaristBaseRobot2024_Quad {
 // ~  3). "double timeoutS" is to stop the program after a certain amount
 // ~      of time.
 // ~ The next four int variables that are created will be used to calculate
-// ~ the distance (and by extension the amount of rotation of the motors) that
-// ~ the robot will travel when it the method finishes executing. 
+// ~ the position (i.e the distance) that the robot will travel to when the
+// ~ method finishes executing. 
 	    
 	// Creates new variables for the Scope of this method.
         int newLeftFrontTarget;
         int newRightFrontTarget;
         int newLeftRearTarget;
         int newRightRearTarget;
+
+// ~ *UPDATE THIS*
 
         // Reverse inches. Goofy and Hacky. Essential to configure.
         inches = inches * -1 * (12.0/39.0);
@@ -417,25 +430,49 @@ public class MaristBaseRobot2024_Quad {
             speed = DRIVE_SPEED; //
         }
 
+// ~ *UPDATE THIS*
 // ~ Remember the section near the beginning that was about OpMode? This is
-// ~ where the program checks if an OpMode program is currently running
+// ~ where the program checks if an OpMode program is currently running so
+// ~ the code within the If Statements won't accidently execute.
 
         // Ensure that the opmode is still active
         //if (opModeIsActive()) {
         if (true) {       // Swapped out to include in MaristBaseRobot
 
+// ~ This is when we calculate the position the robot will travel to. We
+// ~ multiply the double variable "inches" with the double variable 
+// ~ "COUNTS_PER_INCH", cast the calculation to be an int, and add
+// ~ the calculation into the current position of one of the four motors. 
+// ~ Finally, we assign the final number to it's new target position 
+// ~ variable. If you understand why we casted the calculation, you do not 
+// ~ need my explaination. But if you do,
+// ~ Casting is when we change a variable type to another variable type.
+// ~ This is more commonly seen between int and double variables. We do this
+// ~ because of how Java works. If you remove the "(int)" from the code below,
+// ~ You will receive an error. This is because you cannot add a double 
+// ~ [(inches * COUNTS_PER_INCH)] to an int [leftFront.getCurrentPosition()].
+// ~  We cast the calculation so all the numbers used are int's. 
+		
             // Determine new target position, and pass to motor controller. Notice the casting.
             newLeftFrontTarget = leftFront.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             newRightFrontTarget = rightFront.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             newLeftRearTarget = leftRear.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
             newRightRearTarget = rightRear.getCurrentPosition() + (int)(inches * COUNTS_PER_INCH);
-          
+
+// ~ For each motor, we now set the target position variable to be the target
+// ~ position.
+		
             // Goal of the previous math.
             leftFront.setTargetPosition(newLeftFrontTarget);
             rightFront.setTargetPosition(newRightFrontTarget);
             leftRear.setTargetPosition(newLeftRearTarget);
             rightRear.setTargetPosition(newRightRearTarget);
 
+// ~ Now that we decided the target position for all the motors, the code
+// ~ below (in simple terms) sets the motors to run with encoders and paves 
+// ~ the path that the motors will follow until they hits their target
+// ~ position. 
+		
             // Turn On RUN_TO_POSITION. Motor will run until it hits position.
             leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -462,19 +499,21 @@ public class MaristBaseRobot2024_Quad {
                    // Wait for Sequence to complete
             }
 
-            // Stop all motion; It is optional. It is better to comment this out to make the robot more effiecent and not coast (sliding).
+            // Stop all motion; It is optional. It is better to comment this out to make the robot more 
+	    // efficient and not coast (sliding).
             leftFront.setPower(0);
             rightFront.setPower(0);
             leftRear.setPower(0);
             rightRear.setPower(0);
 
-            // Turn off RUN_TO_POSITION. It is optional.It is better to comment this out to make the robot more effiecent and not coast (sliding).
+            // Turn off RUN_TO_POSITION. It is optional. It is better to comment this out to make the 
+	    // robot more effiecent and not coast (sliding).
             leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-            //  sleep(250);   // optional pause after each move
+            //sleep(250);   // optional pause after each move
         }
     }
 
