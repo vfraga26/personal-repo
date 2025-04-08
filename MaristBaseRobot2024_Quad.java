@@ -191,11 +191,21 @@ public class MaristBaseRobot2024_Quad {
 // ~ and relate it to the Java Names. This will be done in a later section.
 // ~ The variable "ElapsedTime" is not relevant to our purposes, so please 
 // ~ disregard.
+	
 // ~ Also take note of the "Local OpMode" being mentioned. Operational Mode
 // ~ (or just OpMode) is a class that adds a program to the Driver Station
-// ~ so we can access and initialize programs. This will be used in the program's
-// ~ methods to confirm if OpMode was initialized so it won't accidently 
-// ~ execute 
+// ~ so we can access and initialize said program (ex. TeleopStrafer_Quad.java).
+// ~ OpMode is also a program type that dictates the type of behavior the robot 
+// ~ will have. There are two types of OpMode:
+// ~  1. Linear OpMode (Commonly known as Autonomous) - Executes code 
+// ~     sequentially.
+// ~  2. Regular OpMode (Commonly known as TeleOp) - Executes code continuously
+// ~     to allow continuous driver operation.
+// ~ These objects (members) are "local" to OpMode (i.e. declared in the OpMode 
+// ~ Class), being pulled from OpMode so we can use them.
+// ~ These objects will be used in the methods of this Base Robot program to 
+// ~ confirm if an OpMode was initialized, so the code within their If Statments 
+// ~ won't accidently execute. 
  
     // Local OpMode members
     HardwareMap hwMap = null;
@@ -407,6 +417,8 @@ public class MaristBaseRobot2024_Quad {
             speed = DRIVE_SPEED; //
         }
 
+// ~ Remember the section near the beginning that was about OpMode? This is
+// ~ where the program checks if an OpMode program is currently running
 
         // Ensure that the opmode is still active
         //if (opModeIsActive()) {
