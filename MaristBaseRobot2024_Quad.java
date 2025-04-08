@@ -191,6 +191,11 @@ public class MaristBaseRobot2024_Quad {
 // ~ and relate it to the Java Names. This will be done in a later section.
 // ~ The variable "ElapsedTime" is not relevant to our purposes, so please 
 // ~ disregard.
+// ~ Also take note of the "Local OpMode" being mentioned. Operational Mode
+// ~ (or just OpMode) is a class that adds a program to the Driver Station
+// ~ so we can access and initialize programs. This will be used in the program's
+// ~ methods to confirm if OpMode was initialized so it won't accidently 
+// ~ execute 
  
     // Local OpMode members
     HardwareMap hwMap = null;
