@@ -510,7 +510,7 @@ public class MaristBaseRobot2024_Quad {
 // ~ method. Now that we set up the path that the robot will take, we now
 // ~ reset the time (period) to measure how long the robot takes to travel
 // ~ the path. Next, we start motion in the motors and the robot begins to
-// ~ move.
+// ~ move. 
 		
             // reset the timeout time and start motion. Turns the motors on.
             period.reset();
@@ -519,6 +519,19 @@ public class MaristBaseRobot2024_Quad {
             leftRear.setPower(Math.abs(speed));
             rightRear.setPower(Math.abs(speed));
 
+// ~ There is no need for an explaination of this portion of the code (as the 
+// ~ explaination is already provided), but it is important to understand why
+// ~ While Loops are dangerous to implement within a Base Robot program.
+// ~ Our init method is meant to run continuously so the robot stays initialized
+// ~ during any operation it does and allow the execution of the methods inside
+// ~ of the init method. When you use a While Loop, it has a high possibility  
+// ~ of overriding any methods currently running, potentially leading the robot 
+// ~ to be unresponsive or behave erratically.
+// ~ While it is not discouraged to use While Loops in these types of programs,
+// ~ it is important to be careful and mindful of where we use them. In this
+// ~ program, there are only five active While Loops, which are all being used
+// ~ for the same purpose (purpose noted below by the original writers).
+		
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
@@ -532,6 +545,8 @@ public class MaristBaseRobot2024_Quad {
                    // Wait for Sequence to complete
             }
 
+// ~ CONTINUE HERE
+		
             // Stop all motion; It is optional. It is better to comment this out to make the robot more 
 	    // efficient and not coast (sliding).
             leftFront.setPower(0);
