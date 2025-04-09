@@ -545,7 +545,18 @@ public class MaristBaseRobot2024_Quad {
                    // Wait for Sequence to complete
             }
 
-// ~ CONTINUE HERE
+// ~ When the robot reaches it's destination or time has runned out, this
+// ~ next section stops all motion by cutting the power from all four motors.
+// ~ This section is optional to have in your Base Robot code but it is 
+// ~ recommended to remove it. This is because of an unintended consequence
+// ~ of coasting.
+// ~ Coasting is where the robot continues moving even after the power to the
+// ~ motors is cut. This happens because, unfortunate as it is, programmers
+// ~ are unable to perfectly predict how chassis motors will interact with 
+// ~ the game field. This is one weakness that us programmers will tend to
+// ~ have. When power is cut from the motors, the program has no idea if the
+// ~ motors are moving at the speed it says it is. If a programmer does not 
+// ~ consider 
 		
             // Stop all motion; It is optional. It is better to comment this out to make the robot more 
 	    // efficient and not coast (sliding).
@@ -565,9 +576,7 @@ public class MaristBaseRobot2024_Quad {
         }
     }
 
-    public void pointTurnDegrees(double speed,
-                                 double deg,
-                                 double timeoutS) {
+    public void pointTurnDegrees(double speed, double deg, double timeoutS) {
 
         int newLeftFrontTarget;
         int newRightFrontTarget;
