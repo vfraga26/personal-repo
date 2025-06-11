@@ -556,14 +556,15 @@ public class MaristBaseRobot2024_Quad {
 // ~ the game field. This is one weakness that us programmers will tend to
 // ~ have. When power is cut from the motors, the program has no idea if the
 // ~ motors are moving at the speed it says it is. If a programmer does not 
-// ~ consider 
+// ~ consider this parameter, the movement can ruin the outcome that 
+// ~ pro
 		
             // Stop all motion; It is optional. It is better to comment this out to make the robot more 
 	    // efficient and not coast (sliding).
-            leftFront.setPower(0);
-            rightFront.setPower(0);
-            leftRear.setPower(0);
-            rightRear.setPower(0);
+            //leftFront.setPower(0);
+            //rightFront.setPower(0);
+            //leftRear.setPower(0);
+            //rightRear.setPower(0);
 
             // Turn off RUN_TO_POSITION. It is optional. It is better to comment this out to make the 
 	    // robot more effiecent and not coast (sliding).
